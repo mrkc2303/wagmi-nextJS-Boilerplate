@@ -1,0 +1,409 @@
+[
+    {
+        "inputs": [{ "internalType": "address", "name": "_exchange", "type": "address" }],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    { "inputs": [], "name": "Admin__CannotReinitialize", "type": "error" },
+    { "inputs": [], "name": "Admin__InsufficientBalance", "type": "error" },
+    { "inputs": [], "name": "Admin__InvalidOp", "type": "error" },
+    { "inputs": [], "name": "Admin__InvalidUser", "type": "error" },
+    { "inputs": [], "name": "Admin__LowBalanceForPermit", "type": "error" },
+    { "inputs": [], "name": "Admin__NoVaultExists", "type": "error" },
+    { "inputs": [], "name": "Admin__NotInitialized", "type": "error" },
+    { "inputs": [], "name": "Admin__OrderBookExists", "type": "error" },
+    { "inputs": [], "name": "Admin__TokenVaultExists", "type": "error" },
+    { "inputs": [], "name": "Admin__UnauthorizedAccess", "type": "error" },
+    {
+        "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }],
+        "name": "OwnableInvalidOwner",
+        "type": "error"
+    },
+    {
+        "inputs": [{ "internalType": "address", "name": "account", "type": "address" }],
+        "name": "OwnableUnauthorizedAccount",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            { "indexed": true, "internalType": "uint256", "name": "groupId", "type": "uint256" },
+            { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
+            { "indexed": true, "internalType": "uint256", "name": "lprp", "type": "uint256" },
+            { "indexed": false, "internalType": "uint256", "name": "permitValue", "type": "uint256" },
+            { "indexed": false, "internalType": "address", "name": "token", "type": "address" }
+        ],
+        "name": "Admin__LiquidityGroupCreated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            { "indexed": true, "internalType": "uint256", "name": "groupId", "type": "uint256" },
+            { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
+            { "indexed": true, "internalType": "uint256", "name": "lprp", "type": "uint256" }
+        ],
+        "name": "Admin__LiquidityGroupRemoved",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            { "indexed": true, "internalType": "uint256", "name": "groupId", "type": "uint256" },
+            { "indexed": true, "internalType": "address", "name": "liquidToken", "type": "address" },
+            { "indexed": true, "internalType": "address", "name": "otherToken", "type": "address" }
+        ],
+        "name": "Admin__LiquidityTradeExecuted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            { "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" },
+            { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+        "name": "LPRP",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "_tradeToken", "type": "address" },
+            { "internalType": "address", "name": "_baseToken", "type": "address" },
+            { "internalType": "address", "name": "_matcher", "type": "address" },
+            {
+                "components": [
+                    { "internalType": "uint32", "name": "makerFee", "type": "uint32" },
+                    { "internalType": "uint32", "name": "takerFee", "type": "uint32" },
+                    { "internalType": "uint32", "name": "platformFee", "type": "uint32" },
+                    { "internalType": "uint32", "name": "liquidityFee", "type": "uint32" }
+                ],
+                "internalType": "struct TokenFeeInfo",
+                "name": "_tradeFeeInfo",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    { "internalType": "uint32", "name": "makerFee", "type": "uint32" },
+                    { "internalType": "uint32", "name": "takerFee", "type": "uint32" },
+                    { "internalType": "uint32", "name": "platformFee", "type": "uint32" },
+                    { "internalType": "uint32", "name": "liquidityFee", "type": "uint32" }
+                ],
+                "internalType": "struct TokenFeeInfo",
+                "name": "_baseFeeInfo",
+                "type": "tuple"
+            }
+        ],
+        "name": "createOrderBook",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "address", "name": "_token", "type": "address" }],
+        "name": "createTokenVault",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "token", "type": "address" },
+            {
+                "internalType": "uint256",
+                "name": "_depositValue",
+                "type": "uint256"
+            }
+        ],
+        "name": "deposit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "availToken", "type": "address" },
+            { "internalType": "uint256", "name": "permitValue", "type": "uint256" },
+            { "internalType": "uint256", "name": "dextrConvertValue", "type": "uint256" },
+            { "internalType": "uint256", "name": "minPrice", "type": "uint256" },
+            { "internalType": "uint256", "name": "maxPrice", "type": "uint256" },
+            { "internalType": "address[]", "name": "permitTokens", "type": "address[]" },
+            { "internalType": "uint256[]", "name": "minPermitPrices", "type": "uint256[]" },
+            { "internalType": "uint256[]", "name": "maxPermitPrices", "type": "uint256[]" }
+        ],
+        "name": "enableFreeLiquidity",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "user", "type": "address" },
+            { "internalType": "address", "name": "token", "type": "address" },
+            { "internalType": "uint256", "name": "quantity", "type": "uint256" }
+        ],
+        "name": "escrowFunds",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "user", "type": "address" },
+            { "internalType": "address", "name": "token", "type": "address" },
+            { "internalType": "uint256", "name": "quantity", "type": "uint256" }
+        ],
+        "name": "escrowLiqFunds",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "groupId", "type": "uint256" }],
+        "name": "getGroupDetails",
+        "outputs": [
+            { "internalType": "address[]", "name": "tokens", "type": "address[]" },
+            { "internalType": "uint256[]", "name": "liqBal", "type": "uint256[]" },
+            { "internalType": "uint256[]", "name": "minLiqTrigger", "type": "uint256[]" },
+            { "internalType": "uint256[]", "name": "maxLiqTrigger", "type": "uint256[]" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "groupId", "type": "uint256" }],
+        "name": "getGroupUserById",
+        "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "groupId", "type": "uint256" },
+            { "internalType": "address", "name": "tokenAddress", "type": "address" }
+        ],
+        "name": "getLiqBalByGroup",
+        "outputs": [
+            { "internalType": "uint256", "name": "liqBal", "type": "uint256" },
+            { "internalType": "uint256", "name": "minLiqTrigger", "type": "uint256" },
+            { "internalType": "uint256", "name": "maxLiqTrigger", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "user", "type": "address" },
+            { "internalType": "address", "name": "token", "type": "address" }
+        ],
+        "name": "getUserTokenFolio",
+        "outputs": [
+            {
+                "components": [
+                    { "internalType": "uint256", "name": "availableBalance", "type": "uint256" },
+                    { "internalType": "uint256", "name": "inOrderBalance", "type": "uint256" },
+                    { "internalType": "uint256", "name": "inOrderMarketBalance", "type": "uint256" }
+                ],
+                "internalType": "struct TokenBalance",
+                "name": "tokenBal",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "_proxyFactory", "type": "address" },
+            { "internalType": "address", "name": "_userRegistryAddress", "type": "address" }
+        ],
+        "name": "initializeAdmin",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+        "name": "isOrderbook",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "", "type": "address" },
+            { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "name": "orderBooks",
+        "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "name": "permitGroups",
+        "outputs": [
+            { "internalType": "address", "name": "userAddress", "type": "address" },
+            { "internalType": "uint256", "name": "group_LPRP", "type": "uint256" },
+            { "internalType": "bool", "name": "isActive", "type": "bool" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "proxyFactory",
+        "outputs": [{ "internalType": "contract MinimalProxyFactory", "name": "", "type": "address" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "user", "type": "address" },
+            { "internalType": "address", "name": "token", "type": "address" },
+            { "internalType": "uint256", "name": "quantity", "type": "uint256" }
+        ],
+        "name": "releaseFunds",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "user", "type": "address" },
+            { "internalType": "address", "name": "token", "type": "address" },
+            { "internalType": "uint256", "name": "quantity", "type": "uint256" }
+        ],
+        "name": "releaseLiqFunds",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "groupId", "type": "uint256" }],
+        "name": "removeLiquidity",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+    {
+        "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+        "name": "tokenVaults",
+        "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "token", "type": "address" },
+            { "internalType": "address", "name": "seller", "type": "address" },
+            { "internalType": "address", "name": "buyer", "type": "address" },
+            { "internalType": "uint256", "name": "quantity", "type": "uint256" },
+            { "internalType": "bool", "name": "isMaker", "type": "bool" },
+            {
+                "components": [
+                    { "internalType": "uint32", "name": "makerFee", "type": "uint32" },
+                    { "internalType": "uint32", "name": "takerFee", "type": "uint32" },
+                    { "internalType": "uint32", "name": "platformFee", "type": "uint32" },
+                    { "internalType": "uint32", "name": "liquidityFee", "type": "uint32" }
+                ],
+                "internalType": "struct TokenFeeInfo",
+                "name": "tokenFee",
+                "type": "tuple"
+            }
+        ],
+        "name": "transferBalance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "otherToken", "type": "address" },
+            { "internalType": "address", "name": "liquidToken", "type": "address" },
+            { "internalType": "address", "name": "lqProvider", "type": "address" },
+            { "internalType": "address", "name": "buyer", "type": "address" },
+            { "internalType": "uint256", "name": "quantity", "type": "uint256" },
+            { "internalType": "uint256", "name": "lpGroupId", "type": "uint256" },
+            {
+                "components": [
+                    { "internalType": "uint32", "name": "makerFee", "type": "uint32" },
+                    { "internalType": "uint32", "name": "takerFee", "type": "uint32" },
+                    { "internalType": "uint32", "name": "platformFee", "type": "uint32" },
+                    { "internalType": "uint32", "name": "liquidityFee", "type": "uint32" }
+                ],
+                "internalType": "struct TokenFeeInfo",
+                "name": "tokenFee",
+                "type": "tuple"
+            },
+            { "internalType": "bool", "name": "isBuyOrder", "type": "bool" }
+        ],
+        "name": "transferLiqBalance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "_newFactor", "type": "uint256" }],
+        "name": "updateDIDFactor",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "_newFactor", "type": "uint256" }],
+        "name": "updateDIFactor",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "", "type": "address" },
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "name": "userPermitGroupIds",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "userRegistry",
+        "outputs": [{ "internalType": "contract IUserRegistry", "name": "", "type": "address" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "token", "type": "address" },
+            { "internalType": "address", "name": "receiver", "type": "address" },
+            { "internalType": "uint256", "name": "_withdrawValue", "type": "uint256" }
+        ],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]
